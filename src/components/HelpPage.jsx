@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { LocaleContext } from "./LocaleContext";
+import { LocaleContext } from "../context/LocaleContext";
 
 const HelpPage = () => {
   const { t } = useContext(LocaleContext);

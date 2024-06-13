@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 
 // Import translations
-import translationsRU from "./locales/ru.json";
-import translationsEN from "./locales/en.json";
+import enTranslations from "../locales/en.json";
+import ruTranslations from "../locales/ru.json";
 
 export const LocaleContext = createContext();
 
@@ -11,8 +11,8 @@ const LocaleProvider = ({ children }) => {
 
   // Select translations based on locale
   const translations = {
-    ru: translationsRU,
-    en: translationsEN,
+    ru: ruTranslations,
+    en: enTranslations,
   };
 
   // Function to get translated text based on current locale

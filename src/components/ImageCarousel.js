@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import AddImageModal from "./AddImageModal";
 import EditImageModal from "./EditImageModal";
-import { LocaleContext } from "./LocaleContext";
+import { LocaleContext } from "../context/LocaleContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -16,7 +16,11 @@ const ImageCarousel = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleAddImage = (newImage) => {
+    // Add a unique ID to the new image
+    newImage.id = Date.now(); // You can use a better method to generate unique IDs
+
     setImages([...images, newImage]);
+    setIsModalOpen(false); // Close modal after adding image
   };
 
   const handleOpenModal = () => {
@@ -39,10 +43,15 @@ const ImageCarousel = () => {
 
   const handleUpdateImage = (updatedImage) => {
     const updatedImages = images.map((image) =>
-      image === selectedImage ? updatedImage : image
+      image.id === updatedImage.id ? updatedImage : image
     );
     setImages(updatedImages);
     setIsEditing(false);
+  };
+
+  const handleDeleteImage = (imageId) => {
+    const updatedImages = images.filter((image) => image.id !== imageId);
+    setImages(updatedImages);
   };
 
   const settings = {
@@ -73,14 +82,16 @@ const ImageCarousel = () => {
     <div className="image-carousel">
       <h2>{t("carouselTitle")}</h2>
       <Slider {...settings}>
-        {images.map((image, index) => (
-          <div key={index} onClick={() => handleEditImage(image)}>
+        {images.map((image) => (
+          <div key={image.id}>
             <img
               src={image.url}
-              alt={`Image ${index}`}
+              alt={image.description}
               style={{ maxHeight: 100, maxWidth: 150 }}
+              onClick={() => handleEditImage(image)}
             />
             <p>{image.description}</p>
+            <button onClick={() => handleDeleteImage(image.id)}>Delete</button>
           </div>
         ))}
       </Slider>

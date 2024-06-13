@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 
 // Import translations
-import translationsRU from "./locales/ru.json";
-import translationsEN from "./locales/en.json";
+import translationsRU from "../locales/ru.json";
+import translationsEN from "../locales/en.json";
 
 export const LocaleContext = createContext();
 

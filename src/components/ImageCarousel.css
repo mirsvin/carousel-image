@@ -1,0 +1,119 @@
+/* ImageCarousel.css */
+.image-carousel {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  .image-carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .image-carousel-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .image-carousel-buttons button,
+  .image-carousel-buttons a {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .image-carousel-buttons button:hover,
+  .image-carousel-buttons a:hover {
+    background-color: #0056b3;
+  }
+  
+  .slider-wrapper {
+    position: relative;
+  }
+  
+  .slick-slide {
+    padding: 0 10px;
+    text-align: center;
+  }
+  
+  .slick-slide img {
+    max-width: 100%;
+    max-height: 100px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .slick-dots {
+    bottom: -35px;
+  }
+  
+  .slick-dots li button::before {
+    font-size: 10px;
+    color: #333;
+  }
+  
+  .add-image-modal,
+  .edit-image-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .modal-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .modal-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .modal-buttons button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-buttons button:hover {
+    background-color: #0056b3;
+  }
+  
+  .modal-buttons button:first-child {
+    margin-left: 0;
+  }
+  

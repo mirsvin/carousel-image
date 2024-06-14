@@ -1,28 +1,48 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import Modal from "react-modal";
-import { LocaleContext } from "../context/LocaleContext";
+import { LocaleContext, LocaleContextType } from "../context/LocaleContext";
 import "./ImageModal.css";
 
-const ImageModal = ({ isOpen, onRequestClose, onSave, initialData = {} }) => {
-  const [url, setUrl] = useState("");
-  const [description, setDescription] = useState("");
-  const [error, setError] = useState("");
-  const { t } = useContext(LocaleContext);
+interface Props {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  onSave: (data: { url: string; description: string }) => void;
+  initialData?: { url?: string; description?: string };
+}
+
+const ImageModal: React.FC<Props> = ({
+  isOpen,
+  onRequestClose,
+  onSave,
+  initialData = {},
+}: Props) => {
+  const [url, setUrl] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const { t } = useContext(LocaleContext) as LocaleContextType;
 
   useEffect(() => {
     if (isOpen) {
       setUrl(initialData.url || "");
       setDescription(initialData.description || "");
     }
-  }, [isOpen]);
+  }, [isOpen, initialData]);
 
   const handleSave = () => {
     if (!url) {
       setError("URL является обязательным");
       return;
     }
-    onSave({ ...initialData, url, description });
+    onSave({ url, description });
     onRequestClose();
+  };
+
+  const handleChangeUrl = (e: ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+  };
+
+  const handleChangeDescription = (e: ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value);
   };
 
   return (
@@ -35,7 +55,7 @@ const ImageModal = ({ isOpen, onRequestClose, onSave, initialData = {} }) => {
           <input
             type="text"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={handleChangeUrl}
           />
         </div>
         <div className="input-container">
@@ -43,7 +63,7 @@ const ImageModal = ({ isOpen, onRequestClose, onSave, initialData = {} }) => {
           <input
             type="text"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={handleChangeDescription}
           />
         </div>
         <div className="input-container">

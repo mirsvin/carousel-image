@@ -1,9 +1,16 @@
 import React, { useContext } from "react";
 import Modal from "react-modal";
-import { LocaleContext } from "../context/LocaleContext";
+import { LocaleContext, LocaleContextType } from "../context/LocaleContext";
 
-const ConfirmationDialog = ({ isOpen, onRequestClose, onConfirm, message }) => {
-  const { t } = useContext(LocaleContext);
+interface ConfirmationDialogProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  onConfirm: () => void;
+}
+
+const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, onRequestClose, onConfirm }) => {
+  const { t } = useContext(LocaleContext) as LocaleContextType;
+  
   if (!isOpen) return null;
 
   return (

@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { LocaleContext } from "../context/LocaleContext";
+import { LocaleContext, LocaleContextType } from "../context/LocaleContext";
 
-const HelpPage = () => {
-  const { t } = useContext(LocaleContext);
+const HelpPage: React.FC = () => {
+  const { t } = useContext(LocaleContext) as LocaleContextType;
 
   return (
     <div>

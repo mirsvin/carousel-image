@@ -1,37 +1,47 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import Slider from "react-slick";
+import Slider, { Settings } from "react-slick";
 import ImageModal from "./ImageModal";
-import { LocaleContext } from "../context/LocaleContext";
+import { LocaleContext, LocaleContextType } from "../context/LocaleContext";
 import LocaleSelector from "../context/LocaleSelector";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./ImageCarousel.css";
 import ConfirmationDialog from "./ConfirmationDialog";
 
-const ImageCarousel = () => {
-  const { t } = useContext(LocaleContext);
+interface Image {
+  id: number;
+  url: string;
+  description: string;
+}
 
-  const [images, setImages] = useState(() => {
+const ImageCarousel: React.FC = () => {
+  const { t } = useContext(LocaleContext) as LocaleContextType;
+
+  const [images, setImages] = useState<Image[]>(() => {
     const savedImages = localStorage.getItem("images");
     return savedImages ? JSON.parse(savedImages) : [];
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [carouselVisible, setCarouselVisible] = useState(images.length > 0);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [imageToDelete, setImageToDelete] = useState(null);
-  const [selectedImageId, setSelectedImageId] = useState(null);
-  const [direction, setDirection] = useState(images.length >= 5 ? "rtl" : "ltr");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [carouselVisible, setCarouselVisible] = useState<boolean>(images.length > 0);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [imageToDelete, setImageToDelete] = useState<Image | null>(null);
+  const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
+  const [direction, setDirection] = useState<"rtl" | "ltr">(images.length >= 5 ? "rtl" : "ltr");
 
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<Slider>(null);
 
   useEffect(() => {
     localStorage.setItem("images", JSON.stringify(images));
   }, [images]);
 
-  const handleAddImage = (newImage) => {
-    newImage.id = Date.now();
+  const handleAddImage = (data: { url: string; description: string }) => {
+    const newImage: Image = {
+      id: Date.now(),
+      url: data.url,
+      description: data.description,
+    };
     setImages([...images, newImage]);
     setIsModalOpen(false);
     setCarouselVisible(true);
@@ -46,20 +56,27 @@ const ImageCarousel = () => {
     setIsModalOpen(false);
   };
 
-  const handleEditImage = (image) => {
+  const handleEditImage = (image: Image) => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
 
-  const handleUpdateImage = (updatedImage) => {
-    const updatedImages = images.map((image) =>
-      image.id === updatedImage.id ? updatedImage : image
-    );
-    setImages(updatedImages);
-    setIsModalOpen(false);
+  const handleUpdateImage = (data: { url: string; description: string }) => {
+    if (selectedImage) {
+      const updatedImage: Image = {
+        ...selectedImage,
+        url: data.url,
+        description: data.description,
+      };
+      const updatedImages = images.map((image) =>
+        image.id === updatedImage.id ? updatedImage : image
+      );
+      setImages(updatedImages);
+      setIsModalOpen(false);
+    }
   };
 
-  const handleDeleteImage = (imageId) => {
+  const handleDeleteImage = (imageId: number) => {
     const updatedImages = images.filter((image) => image.id !== imageId);
     setImages(updatedImages);
     if (updatedImages.length === 0) {
@@ -67,7 +84,7 @@ const ImageCarousel = () => {
     }
   };
 
-  const openDeleteModal = (image) => {
+  const openDeleteModal = (image: Image) => {
     setImageToDelete(image);
     setIsDeleteModalOpen(true);
   };
@@ -78,31 +95,37 @@ const ImageCarousel = () => {
   };
 
   const confirmDelete = () => {
-    handleDeleteImage(imageToDelete.id);
-    closeDeleteModal();
+    if (imageToDelete) {
+      handleDeleteImage(imageToDelete.id);
+      closeDeleteModal();
+    }
   };
 
-  const handleSelectImage = (imageId) => {
+  const handleSelectImage = (imageId: number) => {
     setSelectedImageId(imageId);
   };
 
   const handleMouseEnter = () => {
-    sliderRef.current.slickPause();
+    if (sliderRef.current) {
+      sliderRef.current.slickPause();
+    }
   };
 
   const handleMouseLeave = () => {
-    sliderRef.current.slickPlay();
+    if (sliderRef.current) {
+      sliderRef.current.slickPlay();
+    }
   };
 
-  const handleSwipe = (e, delta) => {
-    if (delta < 0 && direction === "rtl") {
+  const handleSwipe = (swipeDirection: string) => {
+    if (swipeDirection === "left" && direction === "rtl") {
       setDirection("ltr");
-    } else if (delta > 0 && direction === "ltr") {
+    } else if (swipeDirection === "right" && direction === "ltr") {
       setDirection("rtl");
     }
   };
 
-  const settings = {
+  const settings: Settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -178,10 +201,10 @@ const ImageCarousel = () => {
           <Slider
             ref={sliderRef}
             {...settings}
-            onSwipe={(e, delta) => handleSwipe(e, delta)}
+            onSwipe={handleSwipe}
           >
             {images.map((image) => (
-              <div key={image.id} onClick={() => handleEditImage(image)}>
+              <div key={image.id} onClick={() => handleEditImage(image)} className="carousel-image-container">
                 <img
                   src={image.url}
                   alt={image.description}
@@ -205,7 +228,7 @@ const ImageCarousel = () => {
         onConfirm={confirmDelete}
       />
     </div>
-  );
-};
-
-export default ImageCarousel;
+    );
+  };
+  
+  export default ImageCarousel;

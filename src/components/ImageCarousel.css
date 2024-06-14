@@ -73,6 +73,14 @@
   width: calc(100% - 100px);
 }
 
+.carousel-image-container {
+  max-width: 150px;
+  max-height: 100px;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0 5px;
+}
+
 .slick-slide {
   transition: transform 0.8s ease-in-out;
   margin: 0 10px;

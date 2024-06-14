@@ -4,5 +4,16 @@
     "helpButton": "Помощь",
     "helpPageTitle": "Помощь",
     "helpPageContent": "Описание карусели изображений и ее функционала.",
-    "backButton": "Назад"
+    "backButton": "Назад",
+    "imageList": "Список изображений",
+    "answer": "Вы уверены что хотите удалить изображение?",
+    "yesButton": "Да",
+    "noButton": "Нет",
+    "deleteButton": "Удалить",
+    "editButton": "Редактировать",
+    "headerAdd": "Добавить изображение",
+    "cancelButton": "Отмена",
+    "saveButton": "Сохранить",
+    "description": "Описание",
+    "headerEdit": "Редоктировать изображение"
 }

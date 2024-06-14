@@ -4,5 +4,16 @@
     "helpButton": "Help",
     "helpPageTitle": "Help",
     "helpPageContent": "Description of the image carousel and its functionality.",
-    "backButton": "Back"
+    "backButton": "Back",
+    "imageList": "Image List",
+    "answer": "Are you sure you want to delete the image?",
+    "yesButton": "Yes",
+    "noButton": "No",
+    "deleteButton": "Delete",
+    "editButton": "Edit",
+    "headerAdd": "Add image",
+    "cancelButton": "Cancel",
+    "saveButton": "Save",
+    "description": "Description",
+    "headerEdit": "Edit image"
 }

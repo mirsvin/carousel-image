@@ -101,10 +101,6 @@ const ImageCarousel: React.FC = () => {
     }
   };
 
-  const handleSelectImage = (imageId: number) => {
-    setSelectedImageId(imageId);
-  };
-
   const handleMouseEnter = () => {
     if (sliderRef.current) {
       sliderRef.current.slickPause();
@@ -125,10 +121,32 @@ const ImageCarousel: React.FC = () => {
     }
   };
 
+  const handleListItemClick = (imageId: number) => {
+    if (selectedImageId === imageId) {
+      setSelectedImageId(null);
+    } else {
+      setSelectedImageId(imageId);
+    }
+  };
+
+  const handleOutsideClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest(".image-list-item")) {
+      setSelectedImageId(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   const settings: Settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 1000,
     slidesToShow: images.length >= 5 ? 5 : images.length,
     slidesToScroll: 1,
     swipeToSlide: true,
@@ -167,19 +185,22 @@ const ImageCarousel: React.FC = () => {
             <div
               key={image.id}
               className={`image-list-item ${selectedImageId === image.id ? 'selected' : ''}`}
-              onClick={() => handleSelectImage(image.id)}
+              onClick={() => handleListItemClick(image.id)}
             >
-              <input
-                type="text"
+              <textarea
                 value={image.url}
                 onChange={(e) =>
                   setImages(images.map((img) =>
                     img.id === image.id ? { ...img, url: e.target.value } : img
                   ))
                 }
+                rows={1} // Initial number of rows
+                placeholder="Enter URL..."
+                className="image-url-textarea"
+                readOnly
               />
               {selectedImageId === image.id && (
-                <div className="button-container">
+                <div className="button-container" style={{ marginTop: '10px' }}>
                   <button onClick={() => openDeleteModal(image)}>
                     {t("deleteButton")}
                   </button>
@@ -204,13 +225,15 @@ const ImageCarousel: React.FC = () => {
             onSwipe={handleSwipe}
           >
             {images.map((image) => (
-              <div key={image.id} onClick={() => handleEditImage(image)} className="carousel-image-container">
+              <div key={image.id} className="carousel-image-container" onClick={() => handleEditImage(image)}>
                 <img
                   src={image.url}
                   alt={image.description}
                   className="carousel-image"
                 />
-                <p>{image.description}</p>
+                <div className="image-description">
+                  <p>{image.description}</p>
+                </div>
               </div>
             ))}
           </Slider>
@@ -228,7 +251,7 @@ const ImageCarousel: React.FC = () => {
         onConfirm={confirmDelete}
       />
     </div>
-    );
-  };
-  
-  export default ImageCarousel;
+  );
+};
+
+export default ImageCarousel;

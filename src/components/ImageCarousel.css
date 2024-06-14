@@ -10,6 +10,7 @@
   margin-bottom: 20px;
   max-height: 300px;
   overflow-y: auto;
+  width: 100%;
 }
 
 .image-list-item {
@@ -19,11 +20,18 @@
   padding: 10px;
   border: 1px solid transparent;
   cursor: pointer;
+  position: relative;
+  flex-wrap: wrap;
 }
 
-.image-list-item input {
-  flex: 1;
-  margin-right: 10px;
+.image-list-item textarea {
+  width:100%;
+  resize: vertical;
+  overflow-wrap: break-word;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-sizing: border-box;
+  cursor: pointer;
 }
 
 .carousel-container {
@@ -48,9 +56,18 @@
   gap: 10px;
 }
 
+.image-description {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.image-description p {
+  margin: 5px 0;
+}
+
 .button-container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: .5rem;
 }
 
@@ -73,12 +90,48 @@
   width: calc(100% - 100px);
 }
 
+.img-container {
+  width: 150px;
+}
+
 .carousel-image-container {
   max-width: 150px;
   max-height: 100px;
-  display: inline-block;
   overflow: hidden;
   margin: 0 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.carousel-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-image-container .image-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.carousel-image-container:hover .image-description {
+  white-space: initial;
+  overflow: initial;
+  text-overflow: initial;
+}
+
+.carousel-image {
+
+  height: auto;
 }
 
 .slick-slide {
@@ -88,7 +141,7 @@
 
 .slick-slide img {
   display: block;
-  max-width: 100%;
+
   height: auto;
 }
 
@@ -105,22 +158,20 @@
   .sidebar {
     position: static;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-  }
-
-  .image-list-container {
-    margin-top: 10px;
   }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .image-list-item {
-    display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
   }
+
   .button-container {
-    display: flex;
-    justify-content: space-between;
+    flex: 0 1 auto;
+    margin-left: auto;
   }
 }
